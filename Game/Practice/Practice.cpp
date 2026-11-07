@@ -31,7 +31,7 @@ void MarkAssisted() {
  assisted = true;
  // Hotkey toggles are live tools, not serialized Practice parameters.
 }
-void ResetRun() { assisted = Options().showHitbox || Options().alwaysHitbox;for(int i=0;i<ToolCount;i++)if(tools[i])assisted=true; }
+void ResetRun() { assisted = false;for(int i=0;i<ToolCount;i++)if(tools[i])assisted=true; }
 unsigned int TimeoutLockRevision(){return timeoutLockRevision;}
 bool AllowTimeout(bool expired) { return expired && !Enabled(LockTimeout); }
 bool BeforeTimeout(bool beforeDeadline) { return beforeDeadline || Enabled(LockTimeout); }
@@ -127,7 +127,6 @@ void DrawStatus() {
  if (!initialized || !CGame::s_pCurGame || original::DemoActive()) return;
  if (CGame::s_pCurGame->m_curSchemeID==4 && !Replay())
   for (int i=0;i<ToolCount;i++) if (tools[i]) { MarkAssisted(); break; }
- if(CGame::s_pCurGame->m_curSchemeID==4 && !Replay() && (Options().showHitbox||Options().alwaysHitbox)) MarkAssisted();
  if(AdvancedOpen()){DrawAdvanced();return;}
  DrawRuntimeHUD();
  if (!overlayOpen) {DrawAdvanced();return;}
