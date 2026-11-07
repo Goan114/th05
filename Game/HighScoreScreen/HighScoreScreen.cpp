@@ -45,7 +45,7 @@ CHighScoreScreen::~CHighScoreScreen(void)
 
 void CHighScoreScreen::Initialize(bool bViewMode,bool clearFlag)
 {
- m_storeHighScore=true;
+ m_storeHighScore=!CGame::GVar().m_bPracticeMode&&!CGame::GVar().m_bReplayMode&&!original::DemoActive();
  memcpy(m_scores,CGame::GVar().m_highScore,sizeof(m_scores));
  memcpy(m_names,CGame::GVar().m_highScoreName,sizeof(m_names));
  memcpy(m_flags,CGame::GVar().m_highScoreFlag,sizeof(m_flags));
@@ -59,7 +59,7 @@ void CHighScoreScreen::Initialize(bool bViewMode,bool clearFlag)
 	{
 		int curScore=CGame::GVar().m_curScore;
 		m_opChara=CGame::GVar().m_playChara;
-		if (!CGame::GVar().m_runTurboMode || curScore<=m_scores[m_opChara][m_curPage][4])
+		if ((!CGame::GVar().m_runTurboMode && m_curPage!=4) || curScore<=m_scores[m_opChara][m_curPage][4])
 		{
 			m_bQuit=true;
 			m_quitCode=HIGHSCORESCREEN_END_ENTER_SKIPPED;
@@ -81,11 +81,10 @@ void CHighScoreScreen::Initialize(bool bViewMode,bool clearFlag)
 				m_scores[m_opChara][m_curPage][i]=curScore;
 				m_names[m_opChara][m_curPage][i][0]=0;
 				m_flags[m_opChara][m_curPage][i]=CGame::GVar().m_playStage+1;
-				if (CGame::GVar().m_playStage==6)
+				if (clearFlag)
+					m_flags[m_opChara][m_curPage][i]=128;
+				else if (CGame::GVar().m_playStage==6)
 					m_flags[m_opChara][m_curPage][i]=1;
-				else
-					if (clearFlag)
-						m_flags[m_opChara][m_curPage][i]=128;
 			}
 			else
 				break;
