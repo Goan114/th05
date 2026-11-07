@@ -181,10 +181,10 @@ void CGlobalVariableAndStatistics::OnStageEnter()
 
 void CGlobalVariableAndStatistics::OnClear()
 {
-	if (original::DemoActive() || m_bPracticeMode) return;
+	if (original::DemoActive() || m_bReplayMode || m_bPracticeMode || m_nContinueUsed!=0) return;
 	m_bClear[m_playChara][m_playDifficulty]=true;
 	for (int i=0;i<4;i++)
-		for (int j=1;j<4;j++)
+		for (int j=0;j<4;j++)
 			if (m_bClear[i][j])
 				m_bExtraPlayable[i]=true;
 }
@@ -197,7 +197,7 @@ void CGlobalVariableAndStatistics::Initialize()
 
 	memset(m_bExtraPlayable,0,sizeof(m_bExtraPlayable));
 	for (int i=0;i<4;i++)
-		for (int j=1;j<4;j++)
+		for (int j=0;j<4;j++)
 			if (m_bClear[i][j])
 				m_bExtraPlayable[i]=true;
 

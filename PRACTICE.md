@@ -161,3 +161,24 @@ Staff Roll 的实力评价页、六关成绩页以及 Extra／疮痍后的独立
 thprac 整局通关后，达到当前难度第五名以上的成绩仍显示原版 Score Name Registration 填名页。辅助成绩只插入该页面的临时排行榜；输入、END 确认、渐隐以及随后保存录像沿用原版页面流程，不写入普通排行榜。Turbo／Slow 的辅助通关均可查看该临时排名。普通实战的有效成绩在确认名字后一次性写入分数、姓名与通关标记。
 
 单关 Practice 保留直接保存录像的原有流程；未超过第五名的成绩、普通 Slow 实战以及辅助疮痍的原有资格判断不变。测试通过实际页面输入路径确认字形录入和 END，覆盖四角色、普通／Extra、两种速度模式、内存和磁盘榜单隔离及录像保存跳转。
+
+
+## 通关存档与新增祝贺 CG
+
+Easy／Normal／Hard／Lunatic 不续关通关，解锁当前角色的 Extra Stage，重启仍保留。Extra 的 Slow 模式可登记成绩；确认 END 后，姓名、分数和 ALL 标记写入 score.dat，并可在 High Score 查看。续关、录像播放和单关 Practice 不新增解锁。
+
+用户指定保留通用祝贺 CG：普通／Extra 不续关通关后，结算评价与填名之间展示 CONG1.PI。保留 Congratulations! 大标题与 Extra Stage 名称，下方提示和作者文字汉化。这是移植新增功能，原版 TH05 不调用该画面。
+
+同步修复一面道中 Boss 未初始化速度参数导致的弹幕消失，保留普通／低血量时的原攻击间隔及难度调整。
+
+
+## 原版规则核对与两分支同步（2026-10-29）
+
+- **TH05 的 Easy 可以解锁 Extra Stage**：ReC98 `th04/hiscore/view.cpp` 的 `GAME == 5` 分支在 `extra_playable_with` 中明确合并 Easy、Normal、Hard、Lunatic 的角色通关标记；TH04 的排除 Easy 逻辑属于另一个编译分支。按 TH05 的原版逻辑保留 E／N／H／L 不续关通关解锁，启动时同样读取 Easy 的通关标记。
+- 原版 MAINE `regist_menu` 对普通关卡 Slow 模式跳过登记，但 Extra 不受此限制；通关条目的关卡标记为 ALL，普通／Extra 均适用。续关、回放和 Practice 不新增正式通关解锁；与填名分数是否进入前五名分开处理。
+- `CONG1.PI` 虽然存在于 TH05 资源包内，原版 TH05 的结算入口没有调用它。这里显示祝贺 CG 是用户指定的**移植新增功能**，两个分支均启用，不称为原版流程还原；保留英文 Congratulations! 标题与 Extra Stage 名称，下方提示和作者文字使用简体中文。
+- 两分支同步成绩／解锁／祝贺 CG 与一面道中 Boss 弹幕修复。判定点显示不再标记辅助局的改动仅属于带 thprac 的分支，原生分支没有这项工具。
+
+依据：[ReC98 解锁判断（GAME == 5）](https://github.com/nmlgc/ReC98/blob/master/th04/hiscore/view.cpp#L445-L479)、[原版结算入口](https://github.com/nmlgc/ReC98/blob/master/th04/end/entry.cpp#L130-L162)；本地 `th05_maine.asm` 的 `sub_B730` 与 `regist_menu` 也核对了 ALL 标记、Slow／Extra 登记和不续关通关标记条件。
+
+本次两分支同步验证：thprac 练习 4275 项、原版功能 41351 项；原生 Practice 457 项、原版功能 40971 项全部通过。两分支五段 Demo 在三种绘制频率下的状态摘要一致，祝贺 CG 截图的 SHA-256 也一致。
