@@ -1,3 +1,7 @@
+# 已废弃。此项目将永远不会收到更新。再见。
+
+Deprecated. This project will never receive updates. Goodbye.
+
 # **这是被vibe coding魔改的uth05win**
 
 **This project is vibe coded**
